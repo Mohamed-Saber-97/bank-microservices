@@ -8,11 +8,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.accounts.dto.CustomerAccountDto;
-import org.example.accounts.dto.CustomerDto;
-import org.example.accounts.dto.ErrorResponseDto;
-import org.example.accounts.dto.ResponseDto;
+import org.example.accounts.dto.*;
 import org.example.accounts.service.AccountService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +26,9 @@ import org.springframework.web.bind.annotation.*;
 @Valid
 public class AccountController {
     private final AccountService accountService;
+    @Value("${build.version}")
+    private String buildVersion;
+    private final AccountsContactInfoDto accountsContactInfoDto;
 
     @Operation(summary = "Create Account REST API",
                description = "REST API to create new Customer and Account inside Banking Application")
@@ -97,6 +98,38 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                              .body(ResponseDto.fromHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR));
 
+    }
+
+    @Operation(summary = "Get Build Information",
+               description = "Get Build Information that is deployed inside the microservice application")
+    @ApiResponses({@ApiResponse(responseCode = "200",
+                                description = "HttpStatus OK",
+                                content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+            @ApiResponse(responseCode = "500",
+                         description = "HttpStatus INTERNAL SERVER ERROR",
+                         content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+
+    })
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildInfo() {
+        return ResponseEntity.status(HttpStatus.OK)
+                             .body(buildVersion);
+    }
+
+    @Operation(summary = "Get Contact Information",
+               description = "Contact Info details that can be reached out in case of any issues")
+    @ApiResponses({@ApiResponse(responseCode = "200",
+                                description = "HttpStatus OK",
+                                content = @Content(schema = @Schema(implementation = AccountsContactInfoDto.class))),
+            @ApiResponse(responseCode = "500",
+                         description = "HttpStatus INTERNAL SERVER ERROR",
+                         content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+
+    })
+    @GetMapping("/contact-info")
+    public ResponseEntity<AccountsContactInfoDto> getContactInfo() {
+        return ResponseEntity.status(HttpStatus.OK)
+                             .body(accountsContactInfoDto);
     }
 }
 

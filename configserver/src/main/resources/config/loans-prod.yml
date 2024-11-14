@@ -1,0 +1,8 @@
+build:
+  version: "2.0"
+
+loans:
+  message: "Welcome to Banking Application Loans related local APIs "
+  contactDetails:
+    name: "Mohamed Saber - Developer"
+    email: "mohamed.saber.mohamed.dev@gmail.com"

@@ -10,9 +10,11 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.example.loans.dto.ErrorResponseDto;
+import org.example.loans.dto.LoansContactInfoDto;
 import org.example.loans.dto.LoansDto;
 import org.example.loans.dto.ResponseDto;
 import org.example.loans.service.LoansService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +33,9 @@ import org.springframework.web.bind.annotation.*;
 public class LoansController {
 
     private final LoansService loansService;
-
+    @Value("${build.version}")
+    private String buildVersion;
+    private final LoansContactInfoDto loansContactInfoDto;
     @Operation(
             summary = "Create Loan REST API",
             description = "REST API to create new loan inside Banking Application"
@@ -169,5 +173,35 @@ public class LoansController {
                     .body(ResponseDto.fromHttpStatus(HttpStatus.EXPECTATION_FAILED));
         }
     }
+    @Operation(summary = "Get Build Information",
+               description = "Get Build Information that is deployed inside the microservice application")
+    @ApiResponses({@ApiResponse(responseCode = "200",
+                                description = "HttpStatus OK",
+                                content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+            @ApiResponse(responseCode = "500",
+                         description = "HttpStatus INTERNAL SERVER ERROR",
+                         content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
 
+    })
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildInfo() {
+        return ResponseEntity.status(HttpStatus.OK)
+                             .body(buildVersion);
+    }
+
+    @Operation(summary = "Get Contact Information",
+               description = "Contact Info details that can be reached out in case of any issues")
+    @ApiResponses({@ApiResponse(responseCode = "200",
+                                description = "HttpStatus OK",
+                                content = @Content(schema = @Schema(implementation = LoansContactInfoDto.class))),
+            @ApiResponse(responseCode = "500",
+                         description = "HttpStatus INTERNAL SERVER ERROR",
+                         content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+
+    })
+    @GetMapping("/contact-info")
+    public ResponseEntity<LoansContactInfoDto> getContactInfo() {
+        return ResponseEntity.status(HttpStatus.OK)
+                             .body(loansContactInfoDto);
+    }
 }

@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: loans
   h2:
     console:
       enabled: true
@@ -17,7 +15,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
+  application:
+    name: loans
+  profiles:
+    active: "prod"
+  config:
+    import: "optional:configserver:http://localhost:8071/"
 server:
   port: 8082
-

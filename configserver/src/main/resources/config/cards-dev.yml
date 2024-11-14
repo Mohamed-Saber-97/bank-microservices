@@ -1,0 +1,8 @@
+build:
+  version: "3.0"
+
+cards:
+  message: "Welcome to Banking Application Cards related Development APIs "
+  contactDetails:
+    name: "Mohamed Saber - Developer"
+    email: "mohamed.saber.mohamed.dev@gmail.com"
