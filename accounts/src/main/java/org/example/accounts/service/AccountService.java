@@ -1,5 +1,6 @@
 package org.example.accounts.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.accounts.constants.AccountConstants;
 import org.example.accounts.dto.CustomerAccountDto;
@@ -25,6 +26,7 @@ public class AccountService {
     private final CustomerMapper customerMapper;
     private final AccountsMapper accountsMapper;
 
+    @Transactional
     public void createAccount(CustomerDto customerDto) {
         Optional<Customer> optionalCustomer = customerRepository.findByMobileNumber(customerDto.mobileNumber());
         if (optionalCustomer.isPresent()) {
@@ -62,6 +64,7 @@ public class AccountService {
                                                          accountsMapper.toDto(accounts));
     }
 
+    @Transactional
     public CustomerAccountDto updateAccount(CustomerAccountDto customerAccountDto) {
         Accounts updatedAccount = updateAccountInfo(customerAccountDto);
         Customer updatedCustomer = updateCustomerInfo(updatedAccount.getCustomerID(), customerAccountDto);
@@ -96,6 +99,7 @@ public class AccountService {
                                                                                                     .toString()));
     }
 
+    @Transactional
     public boolean deleteAccount(String mobileNumber) {
         Customer customer = customerRepository.findByMobileNumber(mobileNumber)
                                               .orElseThrow(() -> new ResourceNotFoundException("Customer",

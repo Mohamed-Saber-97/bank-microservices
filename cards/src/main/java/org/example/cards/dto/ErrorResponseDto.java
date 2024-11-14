@@ -1,4 +1,4 @@
-package org.example.accounts.dto;
+package org.example.cards.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;

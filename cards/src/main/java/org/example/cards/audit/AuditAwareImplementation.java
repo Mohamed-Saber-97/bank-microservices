@@ -1,4 +1,4 @@
-package org.example.accounts.audit;
+package org.example.cards.audit;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.AuditorAware;
@@ -13,6 +13,6 @@ public class AuditAwareImplementation implements AuditorAware<String> {
 
     public Optional<String> getCurrentAuditor() {
         //Username from spring security should be used here
-        return Optional.of("ACCOUNTS_MS");
+        return Optional.of("CARDS_MS");
     }
 }
