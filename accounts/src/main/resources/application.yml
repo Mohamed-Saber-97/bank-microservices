@@ -16,10 +16,24 @@ spring:
       hibernate:
         format_sql: true
   application:
-    name: accounts
+    name: "accounts"
   profiles:
     active: "prod"
   config:
     import: "optional:configserver:http://localhost:8071/"
+  cloud:
+    bus:
+      enabled: true
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
 server:
   port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
